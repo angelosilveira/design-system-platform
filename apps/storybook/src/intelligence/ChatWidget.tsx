@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import React, { useState, type FormEvent } from "react";
 import { Button, Card, Input } from "@design-system/ui";
 
 interface Source {
@@ -13,7 +13,7 @@ interface ChatMessage {
   sources?: Source[];
 }
 
-const API_URL = "http://localhost:3333";
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3333";
 
 export function ChatWidget() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
