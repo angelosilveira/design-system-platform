@@ -1,5 +1,7 @@
 # Design System Platform
 
+🔗 **[Storybook ao vivo](https://design-system-platform-storybook.vercel.app)** · API rodando em produção (Railway)
+
 > Um Design System construído do zero — com acessibilidade real, IA aplicada ao
 > fluxo de desenvolvimento, e governança como produto.
 

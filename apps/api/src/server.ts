@@ -11,6 +11,7 @@ await app.register(cors, {
     "http://localhost:6006",
   ],
 });
+
 app.get("/health", async () => ({ status: "ok" }));
 
 await app.register(askRoutes);
