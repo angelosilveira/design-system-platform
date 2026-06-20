@@ -6,9 +6,11 @@ import { askRoutes } from "./routes/ask";
 const app = Fastify({ logger: true });
 
 await app.register(cors, {
-  origin: true,
+  origin: [
+    "https://design-system-platform-storybook.vercel.app",
+    "http://localhost:6006",
+  ],
 });
-
 app.get("/health", async () => ({ status: "ok" }));
 
 await app.register(askRoutes);
