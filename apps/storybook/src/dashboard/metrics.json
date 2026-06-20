@@ -1,0 +1,74 @@
+{
+  "generatedAt": "2026-06-20T18:34:33.400Z",
+  "totalComponents": 8,
+  "documentationCoverage": 100,
+  "testCoverage": 100,
+  "descriptionCoverage": 100,
+  "totalTests": 35,
+  "components": [
+    {
+      "name": "Button",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 48
+    },
+    {
+      "name": "Card",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 4,
+      "hasDescription": true,
+      "linesOfCode": 86
+    },
+    {
+      "name": "DatePicker",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 4,
+      "hasDescription": true,
+      "linesOfCode": 159
+    },
+    {
+      "name": "Input",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 91
+    },
+    {
+      "name": "Modal",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 173
+    },
+    {
+      "name": "Select",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 211
+    },
+    {
+      "name": "Snackbar",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 3,
+      "hasDescription": true,
+      "linesOfCode": 118
+    },
+    {
+      "name": "Table",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 4,
+      "hasDescription": true,
+      "linesOfCode": 171
+    }
+  ]
+}

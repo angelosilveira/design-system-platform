@@ -1,0 +1,7 @@
+{
+  "extends": "@design-system/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [".storybook", "../../packages/ui/src"]
+}

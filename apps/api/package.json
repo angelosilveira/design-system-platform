@@ -1,0 +1,30 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc --noEmit",
+    "lint": "echo 'no lint configured yet'",
+    "extract": "tsx src/scripts/extract.ts",
+    "embed": "tsx src/scripts/embed.ts",
+    "db:migrate": "tsx src/scripts/migrate.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.2",
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.0",
+    "openai": "^4.77.3",
+    "pg": "^8.13.1",
+    "react-docgen-typescript": "^2.2.2",
+    "recharts": "^3.8.1"
+  },
+  "devDependencies": {
+    "@design-system/config": "workspace:*",
+    "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.22.4",
+    "typescript": "^5.7.2"
+  }
+}

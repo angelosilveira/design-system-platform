@@ -1,12 +1,12 @@
 {
-  "name": "@design-system/tokens",
+  "name": "@design-system/a11y-auditor",
   "version": "0.0.0",
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
     "lint": "echo 'no lint configured yet'",
-    "build": "echo 'tokens are consumed as TS source, no build step needed'"
+    "build": "tsc --noEmit"
   },
   "devDependencies": {
     "@design-system/config": "workspace:*",
