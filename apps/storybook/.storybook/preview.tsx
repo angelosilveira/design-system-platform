@@ -17,15 +17,8 @@ const ThemeDecorator: Decorator = (Story, context) => {
     return () => root.removeAttribute("data-theme");
   }, [theme]);
 
-  const bg =
-    theme === "dark"
-      ? "#161B27"
-      : theme === "brand"
-        ? "#F0FDF9"
-        : "#FFFFFF";
-
   return (
-    <div style={{ background: bg, padding: "1.5rem", minHeight: "100vh" }}>
+    <div style={{ background: "var(--ds-color-surface)", padding: "1.5rem", minHeight: "100vh" }}>
       <Story />
     </div>
   );
