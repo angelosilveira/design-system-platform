@@ -20,4 +20,5 @@ export * from "./components/Menu";
 export * from "./components/Pagination";
 export * from "./components/Tabs";
 export * from "./components/Breadcrumb";
+export * from "./components/ThemeProvider";
 export { cn } from "./lib/cn";

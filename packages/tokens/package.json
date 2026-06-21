@@ -6,10 +6,12 @@
   "types": "./src/index.ts",
   "scripts": {
     "lint": "echo 'no lint configured yet'",
-    "build": "echo 'tokens are consumed as TS source, no build step needed'"
+    "build": "echo 'tokens are consumed as TS source, no build step needed'",
+    "generate": "tsx scripts/generate-css.ts"
   },
   "devDependencies": {
     "@design-system/config": "workspace:*",
+    "tsx": "^4.22.4",
     "typescript": "^5.7.2"
   }
 }

@@ -28,7 +28,6 @@ export function Skeleton({
 }: SkeletonProps) {
   return (
     <div
-      role="status"
       aria-hidden="true"
       className={cn(skeletonVariants({ variant }), className)}
       style={{ width, height, ...style }}

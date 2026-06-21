@@ -13,6 +13,8 @@ export interface InputProps
   errorMessage?: string;
   /** Texto de apoio exibido abaixo do campo quando não há erro. */
   helperText?: string;
+  /** Oculta visualmente o rótulo (mantém acessível via sr-only). */
+  hideLabel?: boolean;
 }
 
 /**
@@ -32,6 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       label,
       errorMessage,
       helperText,
+      hideLabel,
       id,
       required,
       ...props
@@ -45,7 +48,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="flex flex-col gap-1">
-        <label htmlFor={inputId} className="text-sm font-medium text-text">
+        <label htmlFor={inputId} className={cn("text-sm font-medium text-text", hideLabel && "sr-only")}>
           {label}
           {required && (
             <span className="text-danger" aria-hidden="true">

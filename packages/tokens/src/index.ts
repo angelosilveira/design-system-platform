@@ -2,6 +2,9 @@ export * from "./colors";
 export * from "./spacing";
 export * from "./typography";
 export * from "./radius-shadow";
+export * from "./themes";
+export { generateThemeCss } from "./transformers/css-transformer";
+export type { TokenTransformer } from "./transformers/types";
 
 import { colors } from "./colors";
 import { spacing } from "./spacing";
@@ -11,10 +14,9 @@ import { radius, shadow } from "./radius-shadow";
 /**
  * Objeto consolidado de tokens — fonte única de verdade.
  *
- * Este objeto é o que conecta os tokens ao `tailwind.config.ts` (via
- * `theme.extend`) e, futuramente, ao gerador multiplataforma do Token
- * Manager (Fase 2): o mesmo schema poderá ser transformado em saídas para
- * Android (Kotlin), iOS (Swift) e CSS puro, sem reescrever os valores.
+ * Conecta os tokens ao `tailwind.config.ts` (via `theme.extend`) e ao
+ * Token Manager: o mesmo schema é transformado em CSS custom properties
+ * via `generateThemeCss()` (CSS Transformer — implementado em Fase 2).
  */
 export const tokens = {
   colors,

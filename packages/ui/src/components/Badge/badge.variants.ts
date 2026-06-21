@@ -9,7 +9,7 @@ export const badgeVariants = cva(
         primary: "bg-primary text-text-inverse",
         success: "bg-success text-text-inverse",
         danger: "bg-danger text-text-inverse",
-        warning: "bg-warning text-text-inverse",
+        warning: "bg-warning text-text",
       },
       size: {
         sm: "px-2 py-0.5 text-xs",

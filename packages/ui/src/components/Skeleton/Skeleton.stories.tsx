@@ -17,7 +17,7 @@ export const Rect: Story = { args: { variant: "rect", width: "300px", height: "1
 
 export const CardLoading: Story = {
   render: () => (
-    <div className="flex gap-4 max-w-sm" aria-label="Carregando conteúdo" aria-busy="true">
+    <div role="group" className="flex gap-4 max-w-sm" aria-label="Carregando conteúdo" aria-busy="true">
       <Skeleton variant="circle" width="48px" height="48px" />
       <div className="flex flex-col gap-2 flex-1">
         <Skeleton variant="line" width="60%" />

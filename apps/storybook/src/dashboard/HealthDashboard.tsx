@@ -115,8 +115,8 @@ function StatusBadge({ ok, label }: { ok: boolean; label?: string }) {
     <span
       className={
         ok
-          ? "inline-flex items-center gap-1 rounded bg-success-subtle px-2 py-0.5 text-xs text-success"
-          : "inline-flex items-center gap-1 rounded bg-danger-subtle px-2 py-0.5 text-xs text-danger"
+          ? "inline-flex items-center gap-1 rounded bg-success-subtle px-2 py-0.5 text-xs text-success-hover"
+          : "inline-flex items-center gap-1 rounded bg-danger-subtle px-2 py-0.5 text-xs text-danger-hover"
       }
     >
       {ok ? "✓" : "✕"} {label ?? (ok ? "Sim" : "Não")}

@@ -1,11 +1,43 @@
 {
-  "generatedAt": "2026-06-20T18:34:33.400Z",
-  "totalComponents": 8,
+  "generatedAt": "2026-06-21T22:11:34.137Z",
+  "totalComponents": 22,
   "documentationCoverage": 100,
   "testCoverage": 100,
   "descriptionCoverage": 100,
-  "totalTests": 35,
+  "totalTests": 102,
   "components": [
+    {
+      "name": "Accordion",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 159
+    },
+    {
+      "name": "Alert",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 80
+    },
+    {
+      "name": "Badge",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 24
+    },
+    {
+      "name": "Breadcrumb",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 4,
+      "hasDescription": true,
+      "linesOfCode": 96
+    },
     {
       "name": "Button",
       "hasStories": true,
@@ -23,12 +55,28 @@
       "linesOfCode": 86
     },
     {
+      "name": "Checkbox",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 115
+    },
+    {
       "name": "DatePicker",
       "hasStories": true,
       "hasTests": true,
       "testCount": 4,
       "hasDescription": true,
-      "linesOfCode": 159
+      "linesOfCode": 164
+    },
+    {
+      "name": "Icon",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 164
     },
     {
       "name": "Input",
@@ -39,12 +87,44 @@
       "linesOfCode": 91
     },
     {
+      "name": "Link",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 76
+    },
+    {
+      "name": "Menu",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 217
+    },
+    {
       "name": "Modal",
       "hasStories": true,
       "hasTests": true,
       "testCount": 5,
       "hasDescription": true,
-      "linesOfCode": 173
+      "linesOfCode": 177
+    },
+    {
+      "name": "Pagination",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 98
+    },
+    {
+      "name": "Radio",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 138
     },
     {
       "name": "Select",
@@ -52,7 +132,15 @@
       "hasTests": true,
       "testCount": 5,
       "hasDescription": true,
-      "linesOfCode": 211
+      "linesOfCode": 214
+    },
+    {
+      "name": "Skeleton",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 4,
+      "hasDescription": true,
+      "linesOfCode": 39
     },
     {
       "name": "Snackbar",
@@ -69,6 +157,30 @@
       "testCount": 4,
       "hasDescription": true,
       "linesOfCode": 171
+    },
+    {
+      "name": "Tabs",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 166
+    },
+    {
+      "name": "Textarea",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 5,
+      "hasDescription": true,
+      "linesOfCode": 66
+    },
+    {
+      "name": "Typography",
+      "hasStories": true,
+      "hasTests": true,
+      "testCount": 4,
+      "hasDescription": true,
+      "linesOfCode": 65
     }
   ]
 }
