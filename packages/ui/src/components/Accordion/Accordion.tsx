@@ -48,14 +48,6 @@ export interface AccordionRootProps {
   className?: string;
 }
 
-/**
- * Accordion.Root — contêiner que gerencia o item aberto do acordeão.
- *
- * Acessibilidade:
- * - Apenas um item pode estar aberto por vez.
- * - Trigger usa aria-expanded e aria-controls apontando para o painel.
- * - Painel usa role="region" e aria-labelledby apontando para o trigger.
- */
 export function AccordionRoot({ children, defaultOpen = "", className }: AccordionRootProps) {
   const [openItem, setOpenItem] = useState<string>(defaultOpen);
 
@@ -65,7 +57,9 @@ export function AccordionRoot({ children, defaultOpen = "", className }: Accordi
 
   return (
     <AccordionContext.Provider value={{ openItem, toggle }}>
-      <div className={cn("rounded-md border border-border", className)}>{children}</div>
+      <div className={cn("overflow-hidden rounded-xl border border-border bg-surface shadow-sm", className)}>
+        {children}
+      </div>
     </AccordionContext.Provider>
   );
 }
@@ -77,7 +71,6 @@ export interface AccordionItemProps {
   className?: string;
 }
 
-/** Accordion.Item — agrupa Trigger e Content de um único item. */
 export function AccordionItem({ value, children, className }: AccordionItemProps) {
   const { openItem } = useAccordionContext();
   const uid = useId();
@@ -87,7 +80,9 @@ export function AccordionItem({ value, children, className }: AccordionItemProps
 
   return (
     <AccordionItemContext.Provider value={{ itemId: value, triggerId, contentId, isOpen }}>
-      <div className={cn(accordionItemVariants(), className)}>{children}</div>
+      <div className={cn(accordionItemVariants(), isOpen && "bg-surface-subtle", className)}>
+        {children}
+      </div>
     </AccordionItemContext.Provider>
   );
 }
@@ -96,7 +91,6 @@ export interface AccordionTriggerProps extends HTMLAttributes<HTMLButtonElement>
   children: ReactNode;
 }
 
-/** Accordion.Trigger — botão que abre/fecha o painel associado. */
 export function AccordionTrigger({ children, className, ...props }: AccordionTriggerProps) {
   const { toggle } = useAccordionContext();
   const { itemId, triggerId, contentId, isOpen } = useAccordionItemContext();
@@ -109,19 +103,28 @@ export function AccordionTrigger({ children, className, ...props }: AccordionTri
         aria-expanded={isOpen}
         aria-controls={contentId}
         onClick={() => toggle(itemId)}
-        className={cn(accordionTriggerVariants(), className)}
+        className={cn(accordionTriggerVariants(), isOpen && "text-primary", className)}
         {...props}
       >
-        {children}
+        <span>{children}</span>
         <svg
           width="16"
           height="16"
           viewBox="0 0 16 16"
           fill="none"
           aria-hidden="true"
-          className={cn("shrink-0 transition-transform duration-200", isOpen && "rotate-180")}
+          className={cn(
+            "shrink-0 text-text-subtle transition-all duration-300 ease-in-out",
+            isOpen && "rotate-180 text-primary"
+          )}
         >
-          <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M4 6L8 10L12 6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
     </h3>
@@ -132,20 +135,30 @@ export interface AccordionContentProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-/** Accordion.Content — painel de conteúdo exibido quando o item está aberto. */
 export function AccordionContent({ children, className, ...props }: AccordionContentProps) {
   const { triggerId, contentId, isOpen } = useAccordionItemContext();
 
   return (
+    /*
+     * CSS grid trick: grid-rows-[0fr] → grid-rows-[1fr] anima a altura sem
+     * precisar medir o DOM. O inner div com overflow-hidden segura o conteúdo
+     * enquanto o painel colapsa.
+     */
     <div
       id={contentId}
       role="region"
       aria-labelledby={triggerId}
-      hidden={!isOpen}
-      className={cn(accordionContentVariants(), isOpen ? "pb-4" : "h-0", className)}
-      {...props}
+      aria-hidden={!isOpen}
+      className={cn(
+        "grid transition-[grid-template-rows] duration-300 ease-in-out",
+        isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+      )}
     >
-      {children}
+      <div className="overflow-hidden">
+        <div className={cn(accordionContentVariants(), className)} {...props}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
