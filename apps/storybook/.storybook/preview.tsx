@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import type { Preview, Decorator } from "@storybook/react";
 import "./tailwind.css";
+import "./tokens.css";
 
 type Theme = "light" | "dark" | "brand";
 

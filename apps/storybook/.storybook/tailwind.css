@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens gerados — atualize rodando: pnpm --filter @design-system/tokens generate */
-@import './tokens.css';
-
 body {
   font-family: theme("fontFamily.sans");
   background-color: var(--ds-color-surface);
