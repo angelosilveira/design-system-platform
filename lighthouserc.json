@@ -2,6 +2,10 @@
   "ci": {
     "collect": {
       "staticDistDir": "./apps/storybook/storybook-static",
+      "url": [
+        "/iframe.html?id=components-button--default&viewMode=story",
+        "/iframe.html?id=health-dashboard-overview--default&viewMode=story"
+      ],
       "numberOfRuns": 1
     },
     "assert": {
