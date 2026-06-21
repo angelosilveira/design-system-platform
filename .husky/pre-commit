@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "🔍 Rodando unit tests antes do commit..."
+pnpm --filter @design-system/ui exec vitest run
+
+if [ $? -ne 0 ]; then
+  echo "❌ Testes falharam. Corrija antes de commitar."
+  exit 1
+fi
+
+echo "✅ Testes passaram."
