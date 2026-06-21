@@ -193,6 +193,9 @@ importers:
       '@design-system/config':
         specifier: workspace:*
         version: link:../config
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.21
       tsx:
         specifier: ^4.22.4
         version: 4.22.4
