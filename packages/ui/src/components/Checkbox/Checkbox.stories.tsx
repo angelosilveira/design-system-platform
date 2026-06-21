@@ -14,11 +14,13 @@ type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = { args: { label: "Aceitar termos de uso" } };
 
+function CheckedExample() {
+  const [checked, setChecked] = useState(true);
+  return <Checkbox label="Receber notificações" checked={checked} onChange={(e) => setChecked(e.target.checked)} />;
+}
+
 export const Checked: Story = {
-  render: () => {
-    const [checked, setChecked] = useState(true);
-    return <Checkbox label="Receber notificações" checked={checked} onChange={(e) => setChecked(e.target.checked)} />;
-  },
+  render: () => <CheckedExample />,
 };
 
 export const WithError: Story = {

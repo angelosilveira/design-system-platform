@@ -8,7 +8,10 @@ const meta: Meta<typeof Alert> = {
   tags: ["autodocs"],
   parameters: { layout: "padded" },
   argTypes: {
-    variant: { control: "select", options: ["info", "success", "warning", "danger"] },
+    variant: {
+      control: "select",
+      options: ["info", "success", "warning", "danger"],
+    },
   },
 };
 
@@ -16,31 +19,49 @@ export default meta;
 type Story = StoryObj<typeof Alert>;
 
 export const Info: Story = {
-  args: { variant: "info", title: "Informação", children: "Sua sessão expira em 30 minutos." },
+  args: {
+    variant: "info",
+    title: "Informação",
+    children: "Sua sessão expira em 30 minutos.",
+  },
 };
 
 export const Success: Story = {
-  args: { variant: "success", title: "Sucesso!", children: "Perfil atualizado com sucesso." },
+  args: {
+    variant: "success",
+    title: "Sucesso!",
+    children: "Perfil atualizado com sucesso.",
+  },
 };
 
 export const Warning: Story = {
-  args: { variant: "warning", title: "Atenção", children: "Esta ação não pode ser desfeita." },
+  args: {
+    variant: "warning",
+    title: "Atenção",
+    children: "Esta ação não pode ser desfeita.",
+  },
 };
 
 export const Danger: Story = {
-  args: { variant: "danger", title: "Erro", children: "Falha ao salvar. Tente novamente." },
+  args: {
+    variant: "danger",
+    title: "Erro",
+    children: "Falha ao salvar. Tente novamente.",
+  },
 };
 
+function DismissibleExample() {
+  const [visible, setVisible] = useState(true);
+  if (!visible) return <p className="text-sm text-text-subtle">Alerta fechado.</p>;
+  return (
+    <Alert variant="info" title="Novo recurso disponível" onDismiss={() => setVisible(false)}>
+      Experimente as novas opções de personalização no seu perfil.
+    </Alert>
+  );
+}
+
 export const Dismissible: Story = {
-  render: () => {
-    const [visible, setVisible] = useState(true);
-    if (!visible) return <p className="text-sm text-text-subtle">Alerta fechado.</p>;
-    return (
-      <Alert variant="info" title="Novo recurso disponível" onDismiss={() => setVisible(false)}>
-        Experimente as novas opções de personalização no seu perfil.
-      </Alert>
-    );
-  },
+  render: () => <DismissibleExample />,
 };
 
 export const AllVariants: Story = {

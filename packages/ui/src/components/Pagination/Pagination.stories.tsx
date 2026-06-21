@@ -12,18 +12,22 @@ const meta: Meta<typeof Pagination> = {
 export default meta;
 type Story = StoryObj<typeof Pagination>;
 
+function DefaultExample() {
+  const [page, setPage] = useState(1);
+  return <Pagination currentPage={page} totalPages={5} onPageChange={setPage} />;
+}
+
+function ManyPagesExample() {
+  const [page, setPage] = useState(5);
+  return <Pagination currentPage={page} totalPages={20} onPageChange={setPage} />;
+}
+
 export const Default: Story = {
-  render: () => {
-    const [page, setPage] = useState(1);
-    return <Pagination currentPage={page} totalPages={5} onPageChange={setPage} />;
-  },
+  render: () => <DefaultExample />,
 };
 
 export const ManyPages: Story = {
-  render: () => {
-    const [page, setPage] = useState(5);
-    return <Pagination currentPage={page} totalPages={20} onPageChange={setPage} />;
-  },
+  render: () => <ManyPagesExample />,
 };
 
 export const FirstPage: Story = {

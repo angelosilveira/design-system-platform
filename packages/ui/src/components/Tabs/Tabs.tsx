@@ -2,7 +2,6 @@ import {
   createContext,
   useContext,
   useId,
-  useRef,
   useState,
   type HTMLAttributes,
   type KeyboardEvent,
@@ -41,7 +40,7 @@ export interface TabsRootProps {
  * - Tabs.List tem role="tablist".
  * - Tabs.Trigger tem role="tab", aria-selected, aria-controls.
  * - Tabs.Content tem role="tabpanel", aria-labelledby.
- * - Navegação com ←→ (roving tabindex) + Home/End.
+ * - Navegação com ←→ (roving tabindex) + Home/End tratados em cada trigger.
  */
 export function TabsRoot({ defaultTab, children, className }: TabsRootProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
@@ -63,41 +62,10 @@ export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-/** Tabs.List — contêiner da lista de tabs com navegação por teclado. */
+/** Tabs.List — contêiner da lista de tabs. A navegação por teclado é gerenciada em cada Trigger. */
 export function TabsList({ children, className, ...props }: TabsListProps) {
-  const { tabs, activeTab, setActiveTab, baseId } = useTabsContext();
-  const listRef = useRef<HTMLDivElement>(null);
-
-  function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
-    const currentIndex = tabs.indexOf(activeTab);
-    if (currentIndex === -1) return;
-
-    let nextIndex = currentIndex;
-
-    if (e.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
-    else if (e.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-    else if (e.key === "Home") nextIndex = 0;
-    else if (e.key === "End") nextIndex = tabs.length - 1;
-    else return;
-
-    e.preventDefault();
-    const nextTab = tabs[nextIndex];
-    setActiveTab(nextTab);
-
-    const nextButton = listRef.current?.querySelector<HTMLButtonElement>(
-      `#${CSS.escape(`${baseId}-tab-${nextTab}`)}`,
-    );
-    nextButton?.focus();
-  }
-
   return (
-    <div
-      ref={listRef}
-      role="tablist"
-      className={cn(tabsListVariants(), className)}
-      onKeyDown={handleKeyDown}
-      {...props}
-    >
+    <div role="tablist" className={cn(tabsListVariants(), className)} {...props}>
       {children}
     </div>
   );
@@ -109,13 +77,38 @@ export interface TabsTriggerProps extends HTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 
-/** Tabs.Trigger — botão de seleção de uma tab. */
-export function TabsTrigger({ value, children, className, ...props }: TabsTriggerProps) {
-  const { activeTab, setActiveTab, registerTab, baseId } = useTabsContext();
+/**
+ * Tabs.Trigger — botão de seleção de uma tab.
+ *
+ * Acessibilidade:
+ * - Keyboard: ← → movem o foco entre tabs (roving tabindex).
+ * - Home/End saltam para a primeira/última tab.
+ * - O handler fica no <button> (naturalmente focusável), não no container.
+ */
+export function TabsTrigger({ value, children, className, onKeyDown, ...props }: TabsTriggerProps) {
+  const { activeTab, setActiveTab, registerTab, tabs, baseId } = useTabsContext();
   const isActive = activeTab === value;
 
-  // Registro lazy da tab no contexto
   registerTab(value);
+
+  function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>) {
+    const currentIndex = tabs.indexOf(value);
+    let nextIndex = currentIndex;
+
+    if (e.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    else if (e.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    else if (e.key === "Home") nextIndex = 0;
+    else if (e.key === "End") nextIndex = tabs.length - 1;
+    else {
+      onKeyDown?.(e);
+      return;
+    }
+
+    e.preventDefault();
+    const nextTab = tabs[nextIndex];
+    setActiveTab(nextTab);
+    document.getElementById(`${baseId}-tab-${nextTab}`)?.focus();
+  }
 
   return (
     <button
@@ -126,6 +119,7 @@ export function TabsTrigger({ value, children, className, ...props }: TabsTrigge
       aria-controls={`${baseId}-panel-${value}`}
       tabIndex={isActive ? 0 : -1}
       onClick={() => setActiveTab(value)}
+      onKeyDown={handleKeyDown}
       className={cn(tabsTriggerVariants({ active: isActive }), className)}
       {...props}
     >
@@ -152,7 +146,10 @@ export function TabsContent({ value, children, className, ...props }: TabsConten
       aria-labelledby={`${baseId}-tab-${value}`}
       hidden={!isActive}
       tabIndex={0}
-      className={cn("focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded", className)}
+      className={cn(
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded",
+        className,
+      )}
       {...props}
     >
       {children}

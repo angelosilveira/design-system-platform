@@ -53,6 +53,7 @@ export function DatePicker({
 
   const labelId = useId();
   const descriptionId = useId();
+  const dialogId = useId();
   const hasError = Boolean(errorMessage);
 
   const { refs, floatingStyles, context } = useFloating({
@@ -83,6 +84,9 @@ export function DatePicker({
         ref={refs.setReference}
         type="button"
         disabled={disabled}
+        role="combobox"
+        aria-expanded={isOpen}
+        aria-controls={dialogId}
         aria-labelledby={labelId}
         aria-describedby={
           errorMessage || helperText ? descriptionId : undefined
@@ -142,6 +146,7 @@ export function DatePicker({
       {isOpen && (
         <div
           ref={refs.setFloating}
+          id={dialogId}
           style={floatingStyles}
           className="z-50 rounded-md border border-border bg-surface shadow-md"
           {...getFloatingProps()}

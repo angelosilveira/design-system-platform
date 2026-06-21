@@ -126,6 +126,9 @@ export function Select({
       </label>
 
       <button
+        role="combobox"
+        aria-expanded={isOpen}
+        aria-controls={listboxId}
         ref={refs.setReference}
         type="button"
         disabled={disabled}

@@ -73,7 +73,7 @@ export function BreadcrumbPage({ children, className, ...props }: BreadcrumbPage
   );
 }
 
-export interface BreadcrumbSeparatorProps extends HTMLAttributes<HTMLSpanElement> {}
+export type BreadcrumbSeparatorProps = HTMLAttributes<HTMLSpanElement>;
 
 /** Breadcrumb.Separator — divisor visual entre itens, oculto de leitores de tela. */
 export function BreadcrumbSeparator({ className, ...props }: BreadcrumbSeparatorProps) {

@@ -26,11 +26,11 @@ describe("DatePicker", () => {
     );
 
     await user.click(
-      screen.getByRole("button", { name: "Data de nascimento" }),
+      screen.getByRole("combobox", { name: "Data de nascimento" }),
     );
 
     expect(
-      screen.getByRole("application", { name: "Calendário" }),
+      screen.getByRole("combobox", { name: "Data de nascimento" }),
     ).toBeInTheDocument();
   });
 
@@ -46,7 +46,7 @@ describe("DatePicker", () => {
     );
 
     await user.click(
-      screen.getByRole("button", { name: "Data de nascimento" }),
+      screen.getByRole("combobox", { name: "Data de nascimento" }),
     );
 
     const todayCell = screen.getByRole("button", { current: "date" });
@@ -68,7 +68,7 @@ describe("DatePicker", () => {
     );
 
     await user.click(
-      screen.getByRole("button", { name: "Data de nascimento" }),
+      screen.getByRole("combobox", { name: "Data de nascimento" }),
     );
     const todayCell = screen.getByRole("button", { current: "date" });
     await user.click(todayCell);

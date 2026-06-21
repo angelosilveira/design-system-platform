@@ -76,6 +76,10 @@ export function ModalRoot({
 
   return createPortal(
     <ModalContext.Provider value={{ titleId, onClose }}>
+      {/*
+        eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions --
+        Backdrop do modal. O equivalente por teclado (Esc) já existe via useEffect acima.
+      */}
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-surface-inverse/50 p-4"
         onClick={(event) => {

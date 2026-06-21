@@ -155,7 +155,7 @@ export function Calendar({
                         cellRefs.current.set(format(day, "yyyy-MM-dd"), node);
                     }}
                     tabIndex={isFocusable ? 0 : -1}
-                    aria-selected={isSelected}
+                    aria-pressed={isSelected}
                     aria-label={format(day, "PPPP", { locale: ptBR })}
                     aria-current={dateIsToday(day) ? "date" : undefined}
                     onClick={() => {

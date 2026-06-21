@@ -11,17 +11,19 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+function DefaultExample() {
+  const [value, setValue] = useState("mensal");
+  return (
+    <Radio.Group name="plano" value={value} onChange={setValue} label="Plano de assinatura">
+      <Radio.Item value="mensal" label="Mensal" />
+      <Radio.Item value="anual" label="Anual (economize 20%)" />
+      <Radio.Item value="lifetime" label="Vitalício" />
+    </Radio.Group>
+  );
+}
+
 export const Default: Story = {
-  render: () => {
-    const [value, setValue] = useState("mensal");
-    return (
-      <Radio.Group name="plano" value={value} onChange={setValue} label="Plano de assinatura">
-        <Radio.Item value="mensal" label="Mensal" />
-        <Radio.Item value="anual" label="Anual (economize 20%)" />
-        <Radio.Item value="lifetime" label="Vitalício" />
-      </Radio.Group>
-    );
-  },
+  render: () => <DefaultExample />,
 };
 
 export const WithError: Story = {

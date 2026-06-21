@@ -10,7 +10,11 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "../../lib/cn";
-import { menuContentVariants, menuItemVariants, type MenuContentVariants } from "./menu.variants";
+import {
+  menuContentVariants,
+  menuItemVariants,
+  type MenuContentVariants,
+} from "./menu.variants";
 
 interface MenuContextValue {
   isOpen: boolean;
@@ -24,7 +28,10 @@ const MenuContext = createContext<MenuContextValue | null>(null);
 
 function useMenuContext() {
   const ctx = useContext(MenuContext);
-  if (!ctx) throw new Error("Menu.Trigger/Content deve ser usado dentro de <Menu.Root>");
+  if (!ctx)
+    throw new Error(
+      "Menu.Trigger/Content deve ser usado dentro de <Menu.Root>",
+    );
   return ctx;
 }
 
@@ -50,8 +57,12 @@ export function MenuRoot({ children, className }: MenuRootProps) {
   const contentId = `menu-content-${uid}`;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  function open() { setIsOpen(true); }
-  function close() { setIsOpen(false); }
+  function open() {
+    setIsOpen(true);
+  }
+  function close() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     if (!isOpen) return;
@@ -59,13 +70,18 @@ export function MenuRoot({ children, className }: MenuRootProps) {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         close();
-        const trigger = containerRef.current?.querySelector<HTMLElement>(`#${CSS.escape(triggerId)}`);
+        const trigger = containerRef.current?.querySelector<HTMLElement>(
+          `#${CSS.escape(triggerId)}`,
+        );
         trigger?.focus();
       }
     }
 
     function handleClickOutside(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         close();
       }
     }
@@ -80,7 +96,10 @@ export function MenuRoot({ children, className }: MenuRootProps) {
 
   return (
     <MenuContext.Provider value={{ isOpen, open, close, triggerId, contentId }}>
-      <div ref={containerRef} className={cn("relative inline-block", className)}>
+      <div
+        ref={containerRef}
+        className={cn("relative inline-block", className)}
+      >
         {children}
       </div>
     </MenuContext.Provider>
@@ -92,7 +111,11 @@ export interface MenuTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement
 }
 
 /** Menu.Trigger — botão que abre/fecha o menu dropdown. */
-export function MenuTrigger({ children, className, ...props }: MenuTriggerProps) {
+export function MenuTrigger({
+  children,
+  className,
+  ...props
+}: MenuTriggerProps) {
   const { isOpen, open, close, triggerId, contentId } = useMenuContext();
 
   return (
@@ -115,12 +138,18 @@ export function MenuTrigger({ children, className, ...props }: MenuTriggerProps)
   );
 }
 
-export interface MenuContentProps extends HTMLAttributes<HTMLDivElement>, MenuContentVariants {
+export interface MenuContentProps
+  extends HTMLAttributes<HTMLDivElement>, MenuContentVariants {
   children: ReactNode;
 }
 
 /** Menu.Content — painel dropdown posicionado abaixo do trigger. */
-export function MenuContent({ children, className, align, ...props }: MenuContentProps) {
+export function MenuContent({
+  children,
+  className,
+  align,
+  ...props
+}: MenuContentProps) {
   const { isOpen, contentId, triggerId } = useMenuContext();
 
   if (!isOpen) return null;
@@ -143,7 +172,12 @@ export interface MenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /** Menu.Item — item clicável dentro do menu. */
-export function MenuItem({ children, className, onClick, ...props }: MenuItemProps) {
+export function MenuItem({
+  children,
+  className,
+  onClick,
+  ...props
+}: MenuItemProps) {
   const { close } = useMenuContext();
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -164,11 +198,13 @@ export function MenuItem({ children, className, onClick, ...props }: MenuItemPro
   );
 }
 
-export interface MenuSeparatorProps extends HTMLAttributes<HTMLHRElement> {}
+export type MenuSeparatorProps = HTMLAttributes<HTMLHRElement>;
 
 /** Menu.Separator — divisor visual entre grupos de items. */
 export function MenuSeparator({ className, ...props }: MenuSeparatorProps) {
-  return <hr role="separator" className={cn("my-1 border-border", className)} {...props} />;
+  return (
+    <hr className={cn("my-1 border-border", className)} {...props} />
+  );
 }
 
 export const Menu = {
