@@ -29,6 +29,9 @@ jobs:
       - name: Lint
         run: pnpm -r lint
 
+      - name: Gerar tokens (web + Android + iOS + Flutter + React Native)
+        run: pnpm --filter @design-system/tokens generate:all
+
       - name: Gerar métricas do Health Dashboard
         run: pnpm --filter storybook metrics
 

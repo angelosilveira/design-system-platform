@@ -7,5 +7,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
     globals: true,
+    // Limita workers para evitar timeouts quando o sistema está sob carga
+    // (ex: durante pre-commit hook com Storybook ou VS Code rodando)
+    maxForks: 4,
   },
 });

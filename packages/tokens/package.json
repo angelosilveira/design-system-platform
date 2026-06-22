@@ -7,11 +7,14 @@
   "scripts": {
     "lint": "echo 'no lint configured yet'",
     "build": "echo 'tokens are consumed as TS source, no build step needed'",
-    "generate": "tsx scripts/generate-css.ts"
+    "generate": "tsx scripts/generate-css.ts",
+    "generate:platforms": "tsx scripts/generate-platforms.ts",
+    "generate:all": "tsx scripts/generate-css.ts && tsx scripts/generate-platforms.ts"
   },
   "devDependencies": {
     "@design-system/config": "workspace:*",
     "@types/node": "^22.0.0",
+    "style-dictionary": "^5.5.0",
     "tsx": "^4.22.4",
     "typescript": "^5.7.2"
   }
