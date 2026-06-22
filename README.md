@@ -1,204 +1,322 @@
 # Design System Platform
 
-🔗 **[Storybook ao vivo](https://design-system-platform-storybook.vercel.app)** · API rodando em produção (Railway)
+**[Storybook ao vivo](https://design-system-platform-storybook.vercel.app)** · API rodando em produção (Railway)
 
-> Um Design System construído do zero — com acessibilidade real, IA aplicada ao
-> fluxo de desenvolvimento, e governança como produto.
+> Design System construído do zero — acessibilidade real, tokens multi-plataforma, IA integrada ao fluxo de desenvolvimento e governança como produto.
 
-Projeto de portfólio construído para um processo seletivo focado em Design
-System. Em vez de mais uma biblioteca de componentes genérica, o objetivo aqui
-foi demonstrar a interseção entre **Design System + Produto + IA**: componentes
-acessíveis construídos do zero, um assistente de IA que responde perguntas
-sobre a documentação real (RAG), e um dashboard de saúde com métricas
-calculadas a partir do código de verdade — nada de dado mockado.
+---
 
-## ✨ O que tem aqui
+## Por que este projeto é diferente
 
-| Feature | Status | Onde está |
-| --- | --- | --- |
-| **22 componentes acessíveis** (Button, Input, Modal, Select, Card, Snackbar, DatePicker, Table, Checkbox, Radio, Textarea, Badge, Icon, Typography, Alert, Skeleton, Accordion, Link, Menu, Pagination, Tabs, Breadcrumb) | ✅ Implementado | `packages/ui` |
-| Design tokens centralizados | ✅ Implementado | `packages/tokens` |
-| **Sistema de temas** (light, dark, brand) via CSS custom properties | ✅ Implementado | `packages/tokens/src/themes` |
-| **CSS Transformer** — gera `:root` com custom properties a partir dos tokens | ✅ Implementado | `packages/tokens/src/transformers` |
-| Storybook documentado, com addon de acessibilidade e theme switcher | ✅ Implementado | `apps/storybook` |
-| **102 testes unitários** (Vitest + Testing Library) | ✅ Implementado | `packages/ui/src/**/*.test.tsx` |
-| **Stories de composição** — formulário completo, tabela paginada | ✅ Implementado | `apps/storybook/src/examples` |
-| **Storybook Intelligence** — chat com RAG sobre a documentação real | ✅ Implementado | `apps/api` + `apps/storybook/src/intelligence` |
-| **Health Dashboard** — métricas reais de cobertura/documentação | ✅ Implementado | `apps/storybook/src/dashboard` |
-| Accessibility Auditor com IA | 📐 Arquitetado | `packages/a11y-auditor` |
+A maioria dos portfólios de Design System entrega uma biblioteca de componentes com Radix ou shadcn/ui. Este projeto faz escolhas deliberadamente mais difíceis:
 
-Ver [`ROADMAP.md`](./ROADMAP.md) e [`CHANGELOG.md`](./CHANGELOG.md).
+- **Componentes sem biblioteca headless** — focus trap, roving tabindex e combobox ARIA implementados à mão para demonstrar compreensão real dos padrões
+- **Tokens como fonte única de verdade para 5 plataformas** — um `pnpm generate` produz CSS vars, Android XML, Swift, Dart e TypeScript a partir do mesmo arquivo TypeScript
+- **IA no workflow de desenvolvimento**, não só no produto — um assistente com RAG que responde sobre os componentes reais do repositório
+- **Métricas nunca mockadas** — o Health Dashboard lê o código-fonte em tempo de execução
 
-## 🧩 Os 22 componentes
+---
 
-### Fase 1 — Componentes Core
-Construídos com foco em ARIA patterns avançados, sem dependências de UI headless:
+## Visão geral
 
-| Componente | ARIA pattern | Destaques |
-| --- | --- | --- |
-| **Button** | `aria-busy`, `aria-disabled` | isLoading state, ref forwarding |
-| **Input** | `aria-invalid`, `aria-describedby` | label obrigatório, useId |
+```
+┌──────────────────────────────────────────────────────────────┐
+│                     Design System Platform                   │
+├─────────────────┬────────────────────┬───────────────────────┤
+│   packages/ui   │  packages/tokens   │      apps/storybook   │
+│  22 componentes │  Tokens + Temas +  │  Documentação + Chat  │
+│  102 testes     │  Style Dictionary  │  Dashboard + Examples │
+│  ARIA patterns  │  5 plataformas     │  90 a11y tests        │
+└─────────────────┴────────────────────┴───────────────────────┘
+```
+
+---
+
+## Funcionalidades
+
+| # | Feature | Detalhes |
+|---|---------|----------|
+| 1 | **22 componentes acessíveis** | Sem Radix/MUI — ARIA implementado do zero |
+| 2 | **Tokens multi-plataforma** | CSS · Android · iOS (Swift) · Flutter · React Native |
+| 3 | **Sistema de temas** | Light / Dark / Brand com CSS custom properties |
+| 4 | **102 testes unitários** | Vitest + Testing Library + 90 Storybook a11y tests |
+| 5 | **Storybook Intelligence** | Chat com RAG sobre a documentação real |
+| 6 | **Health Dashboard** | Métricas de cobertura calculadas do código real |
+| 7 | **CI/CD completo** | GitHub Actions + Lighthouse + artefato do Storybook |
+| 8 | **Developer workflow** | Husky + commitlint + Conventional Commits |
+
+---
+
+## Os 22 componentes
+
+Todos construídos com `forwardRef`, CVA (class-variance-authority) e padrões ARIA sem dependências de UI headless. `@floating-ui/react` é usado exclusivamente para cálculo de posicionamento em overlays.
+
+### Fase 1 — Core
+
+| Componente | ARIA pattern | Destaques técnicos |
+|---|---|---|
+| **Button** | `aria-busy`, `aria-disabled` | estado loading, ref forwarding |
+| **Input** | `aria-invalid`, `aria-describedby` | `useId` para associação label/campo |
 | **Modal** | `role="dialog"`, `aria-modal` | focus trap próprio, portal, Esc |
-| **Select** | combobox ARIA completo | typeahead, roving tabindex, @floating-ui |
-| **DatePicker** | `role="grid"`, `aria-grid` | calendar com ←↑→↓, pt-BR, date-fns |
-| **Table** | `aria-sort`, `scope="col"` | ordenação, caption sr-only |
-| **Card** | compound component | Card.Root/Header/Body/Footer |
+| **Select** | combobox pattern completo | typeahead, roving tabindex, `@floating-ui` |
+| **DatePicker** | `role="grid"`, navegação por setas | pt-BR, `date-fns`, ←↑→↓ Home/End |
+| **Table** | `aria-sort`, `scope="col"` | ordenação, caption acessível |
+| **Card** | compound component | `Card.Root / Header / Body / Footer` |
 | **Snackbar** | `aria-live="polite"` | queue de notificações, auto-dismiss |
 
-### Fase 2 — Expansão da Biblioteca
-14 componentes adicionados preservando os mesmos padrões de acessibilidade:
+### Fase 2 — Expansão
 
-| Componente | ARIA pattern | Destaques |
-| --- | --- | --- |
-| **Checkbox** | `aria-invalid`, indeterminate DOM prop | label obrigatório, ref forwarding |
-| **Radio** | `fieldset`/`legend` | RadioGroup + RadioItem, contexto compartilhado |
-| **Textarea** | `aria-invalid`, `aria-describedby` | idêntico ao Input, resize |
-| **Badge** | span inline | 5 variantes semânticas |
-| **Icon** | `aria-hidden` por padrão | 17 ícones SVG, size prop |
-| **Typography** | polimórfico (`as` prop) | Heading/Text/Caption, nível semântico |
+| Componente | ARIA pattern | Destaques técnicos |
+|---|---|---|
+| **Checkbox** | `aria-invalid`, `indeterminate` | prop DOM direta, ref forwarding |
+| **Radio** | `fieldset` / `legend` | `RadioGroup + RadioItem`, contexto compartilhado |
+| **Textarea** | `aria-invalid`, `aria-describedby` | resize, mesma API do Input |
+| **Badge** | span semântico | 5 variantes com contraste WCAG AA |
+| **Typography** | polimórfico (`as` prop) | `Heading / Text / Caption`, nível semântico |
 | **Alert** | `role="alert"` | dismissível, 4 variantes |
-| **Skeleton** | `aria-hidden="true"` | 3 shapes, width/height props |
-| **Accordion** | `aria-expanded`, `aria-controls` | compound, single-open |
-| **Link** | `rel="noopener noreferrer"` | links externos com sr-only |
+| **Skeleton** | `aria-hidden="true"` | 3 shapes, animação de pulso |
+| **Accordion** | `aria-expanded`, `aria-controls` | animação CSS grid (sem medir DOM) |
+| **Link** | `rel="noopener noreferrer"` | aviso sr-only em links externos |
 | **Menu** | `role="menu"`, `aria-haspopup` | Esc fecha, click-outside |
 | **Pagination** | `aria-current="page"` | ellipsis automático |
 | **Tabs** | `role="tablist"`, roving tabindex | ←→ Home/End nos triggers |
-| **Breadcrumb** | `nav aria-label`, `aria-current="page"` | compound, separadores aria-hidden |
+| **Breadcrumb** | `nav aria-label`, `aria-current="page"` | separadores `aria-hidden` |
+| **Icon** | `aria-hidden` por padrão | 17 ícones SVG inline |
 
-## 🎨 Sistema de temas
+---
 
-Os tokens TypeScript alimentam um CSS Transformer que gera custom properties,
-permitindo troca de tema em runtime sem reconstrução:
+## Tokens multi-plataforma
 
-```bash
-# Gera os arquivos CSS de cada tema
-pnpm --filter @design-system/tokens generate
+O maior diferencial técnico do projeto. Os tokens são definidos uma única vez em TypeScript e um adapter os converte para o formato do [Style Dictionary](https://amzn.github.io/style-dictionary/), que gera os arquivos para cada plataforma.
+
+```
+packages/tokens/src/themes/light.ts   ← fonte única de verdade
+              └── sd-adapter.ts       ← converte ThemeColors → Style Dictionary format
+                       └── generate-platforms.ts
+                                │
+                ┌───────────────┼────────────────┬──────────────────┐
+                ▼               ▼                ▼                  ▼
+         colors.xml       Colors.swift      tokens.dart         tokens.ts
+         (Android)          (iOS)           (Flutter)        (React Native)
 ```
 
-Temas disponíveis: **light** (padrão), **dark**, **brand**.
-O Storybook inclui um theme switcher global para demonstrar a troca em tempo real.
+**Um comando, 12 arquivos** (3 temas × 4 plataformas):
 
-## 🧠 Storybook Intelligence — o diferencial
+```bash
+pnpm --filter @design-system/tokens generate:all
+```
 
-Um copilot que responde perguntas sobre os componentes consultando a
-documentação **real** do projeto via RAG (Retrieval Augmented Generation):
+**Exemplo de output por plataforma:**
+
+```xml
+<!-- Android: dist/android/dark/colors.xml -->
+<color name="color_primary_default">#ff4c9aff</color>
+```
+
+```swift
+// iOS: dist/ios/dark/Colors.swift
+public enum DSDarkColors {
+    public static let colorPrimaryDefault = UIColor(red: 0.298, green: 0.604, blue: 1.000, alpha: 1)
+}
+```
+
+```dart
+// Flutter: dist/flutter/brand/tokens.dart
+class DSBrandTokens {
+    static const colorPrimaryDefault = Color(0xFF00875A);
+}
+```
+
+```ts
+// React Native: dist/react-native/light/tokens.ts
+export const colorPrimaryDefault = "#0052cc";
+```
+
+---
+
+## Sistema de temas
+
+Três temas (light, dark, brand) implementados com CSS custom properties. A troca acontece em runtime sem rebuild — basta setar `data-theme` no `<html>`.
+
+```
+tokens/src/themes/*.ts
+       │
+       ├── generateThemeCss()  →  .storybook/tokens.css
+       │                              :root { --ds-color-primary: #0052CC }
+       │                              [data-theme='dark'] { --ds-color-primary: #4C9AFF }
+       │                              [data-theme='brand'] { --ds-color-primary: #00875A }
+       │
+       └── tailwind.config.ts  →  .bg-primary { background-color: var(--ds-color-primary) }
+```
+
+O Storybook tem um theme switcher na toolbar que dispara o decorator e aplica o tema em todos os componentes simultaneamente.
+
+---
+
+## Storybook Intelligence — RAG
+
+Um assistente dentro do Storybook que responde perguntas sobre os componentes consultando a documentação **real** do repositório — não um LLM genérico.
 
 ```
 Pergunta do usuário
-→ embedding da pergunta (OpenAI text-embedding-3-small)
-→ busca por similaridade no pgvector (Supabase) — TOP 4 matches
-→ contexto real recuperado (props, descrição, exemplo de uso)
-→ resposta gerada com gpt-4o-mini com base nesse contexto
+  → embedding (OpenAI text-embedding-3-small)
+  → busca por similaridade no pgvector (Supabase) — TOP 4 chunks
+  → contexto real: props, exemplos de uso, padrões ARIA
+  → resposta com gpt-4o-mini fundamentada na documentação real
 ```
 
-Pergunte algo como _"Como uso o DatePicker com React Hook Form?"_ e a resposta
-vem com um exemplo de código baseado no componente real do repositório — não
-uma resposta genérica de LLM.
+> *"Como uso o DatePicker com React Hook Form?"* → resposta com exemplo de código baseado no componente real do repositório.
 
-## 📊 Health Dashboard — governança como produto
+**Decisão documentada:** foi encontrado um bug real no índice `ivfflat` — quando criado em tabela vazia, as buscas retornavam zero resultados. O índice precisou ser recriado após a inserção dos dados. Ver `apps/api/src/scripts/migrate.ts`.
 
-Todas as métricas (cobertura de documentação, de testes, de descrição JSDoc)
-são calculadas lendo o código real do repositório a cada execução de
-`pnpm metrics` — sem números inventados.
+---
 
-**Estado atual** (atualizado automaticamente):
-- **22 componentes** com 100% de stories, testes e JSDoc
-- **102 testes unitários** cobrindo rendering, interação e comportamento ARIA
+## Health Dashboard — governança como produto
+
+Todas as métricas são calculadas lendo o código-fonte em tempo de execução via `pnpm metrics`. Nenhum número é estático.
 
 ```bash
 cd apps/storybook && pnpm metrics
 ```
 
-## 🏗️ Stack
+**Estado atual:**
 
-- **Frontend**: React 18 + TypeScript 5 + Tailwind CSS + `class-variance-authority`
-- **Monorepo**: Turborepo + pnpm workspaces
-- **Documentação**: Storybook 8 (Vite builder, addon-a11y, addon-interactions, theme switcher)
-- **Testes**: Vitest + Testing Library + Storybook Test Runner
-- **IA / RAG**: OpenAI (embeddings + chat) + pgvector (Supabase)
-- **API**: Node + Fastify
-- **Componentes construídos do zero** (sem Radix/MUI) — decisão deliberada
-  para demonstrar implementação direta de padrões de acessibilidade
-  (focus trap, roving tabindex, combobox ARIA), com `@floating-ui/react`
-  usado apenas para cálculo de posicionamento de overlays (Select, DatePicker).
+| Métrica | Valor |
+|---|---|
+| Componentes | 22 |
+| Cobertura de stories | 100% |
+| Cobertura de testes | 100% |
+| Cobertura de JSDoc | 100% |
+| Testes unitários | 102 |
+| Testes Storybook (a11y) | 90 |
 
-## 📁 Estrutura do monorepo
+---
+
+## Developer workflow
+
+### Qualidade automatizada
+
+Cada commit passa por dois gates obrigatórios:
+
+**`pre-commit`** — 102 testes unitários rodando antes de qualquer commit:
+```bash
+# .husky/pre-commit
+pnpm --filter @design-system/ui run test
+```
+
+**`commit-msg`** — mensagens validadas com [Conventional Commits](https://conventionalcommits.org):
+```bash
+feat: adiciona variante outline no Button     ✅
+fix: corrige contraste do Badge warning       ✅
+design: melhora animação do Accordion         ✅
+Adicionando nova feature                      ❌  (sem tipo, maiúscula)
+```
+
+### CI/CD (GitHub Actions)
+
+```
+push / PR → main
+  ├── Lint
+  ├── Generate tokens (web + Android + iOS + Flutter + React Native)
+  ├── Build (Storybook + TypeScript check)
+  ├── 102 testes unitários
+  ├── Upload artefato (storybook-static)
+  └── Lighthouse CI (performance audit)
+```
+
+---
+
+## Stack
+
+| Camada | Tecnologia | Decisão |
+|---|---|---|
+| Componentes | React 18 + TypeScript 5 | — |
+| Estilos | Tailwind CSS + CVA | variantes tipadas, sem CSS modules |
+| Tokens | TypeScript puro + Style Dictionary | type-safety + multi-plataforma |
+| Monorepo | Turborepo + pnpm workspaces | cache de build, task graph |
+| Documentação | Storybook 8 (Vite builder) | addon-a11y, addon-interactions |
+| Testes | Vitest + Testing Library + Storybook Test Runner | unitários + a11y |
+| IA / RAG | OpenAI + pgvector (Supabase) | embeddings + busca por similaridade |
+| API | Node.js + Fastify | leve, tipado |
+| Commits | Husky + commitlint | padronização do histórico |
+| CI | GitHub Actions + Lighthouse | qualidade automatizada |
+
+**Componentes construídos do zero** — sem Radix UI, sem shadcn/ui. Decisão deliberada para demonstrar implementação direta dos padrões de acessibilidade. O único utilitário externo de UI é `@floating-ui/react` para posicionamento de overlays.
+
+---
+
+## Estrutura do monorepo
 
 ```
 apps/
-  api/        → API Fastify — RAG (extract, embed, ask)
-  storybook/  → Storybook, ChatWidget, Health Dashboard, examples
+  api/              → Fastify API — pipeline RAG (extract → embed → ask)
+  storybook/        → Documentação, ChatWidget, Health Dashboard, examples
 packages/
-  ui/         → 22 componentes do Design System
-  tokens/     → Design tokens + CSS Transformer + temas
-  a11y-auditor/ → Contrato do futuro Accessibility Auditor (Fase 3)
-  config/     → tsconfig compartilhado
+  ui/               → 22 componentes, 102 testes
+  tokens/           → Design tokens · CSS Transformer · Style Dictionary
+  config/           → tsconfig e ESLint compartilhados
 ```
 
-## 🚀 Como rodar localmente
+---
 
-### Pré-requisitos
-
-- Node 18+
-- pnpm (`npm install -g pnpm`)
-- Conta na [OpenAI](https://platform.openai.com) (para o chat RAG) — opcional
-- Conta no [Supabase](https://supabase.com) (banco com pgvector) — opcional
-
-### 1. Instalar e validar
+## Como rodar localmente
 
 ```bash
+# Instalar dependências
 pnpm install
-pnpm build
-pnpm test
-```
 
-### 2. Rodar o Storybook
+# Gerar tokens para todas as plataformas
+pnpm --filter @design-system/tokens generate:all
 
-```bash
+# Rodar testes
+pnpm --filter @design-system/ui test
+
+# Rodar o Storybook
 cd apps/storybook
-pnpm metrics   # atualiza o Health Dashboard
-pnpm storybook # abre em http://localhost:6006
+pnpm metrics      # atualiza o Health Dashboard
+pnpm storybook    # http://localhost:6006
 ```
 
-### 3. (Opcional) Storybook Intelligence com RAG
+### (Opcional) Storybook Intelligence com RAG
 
 Crie `apps/api/.env` a partir de `apps/api/.env.example`:
-```
-DATABASE_URL=<connection string do pooler do Supabase>
-OPENAI_API_KEY=<sua chave da OpenAI>
+
+```env
+DATABASE_URL=<connection string Supabase pooler>
+OPENAI_API_KEY=<sua chave OpenAI>
 PORT=3333
 ```
 
 ```bash
 cd apps/api
-pnpm db:migrate
-pnpm extract   # extrai documentação dos componentes
-pnpm embed     # gera embeddings no pgvector
+pnpm db:migrate   # cria tabela + índice ivfflat (após inserção)
+pnpm extract      # extrai docs dos componentes
+pnpm embed        # gera embeddings no pgvector
 pnpm dev
 ```
 
-## 🧪 Testes
+---
 
-```bash
-# Testes unitários (102 testes, 22 componentes)
-pnpm --filter @design-system/ui test
+## Decisões de arquitetura
 
-# Storybook Test Runner (smoke tests de todas as stories)
-cd apps/storybook && pnpm storybook &
-pnpm test-storybook
-```
+**Componentes sem biblioteca headless**
+Trade-off entre controle e velocidade. Implementar focus trap, roving tabindex e combobox do zero exige mais tempo mas demonstra compreensão profunda dos padrões ARIA. Ver [`CONTRIBUTING.md`](./CONTRIBUTING.md) para a documentação de cada decisão.
 
-## 🔍 Decisões de arquitetura
+**Tokens como TypeScript puro**
+Type-safety nativa, tree-shaking, e um único adapter gera saída para qualquer plataforma. Sem JSON ou YAML — os tokens são importáveis diretamente.
 
-- **Componentes do zero vs. biblioteca headless**: trade-off consciente entre
-  controle total e velocidade — ver [`CONTRIBUTING.md`](./CONTRIBUTING.md) para
-  como cada padrão ARIA foi escolhido.
-- **Tokens como TypeScript puro**: permite type-safety, tree-shaking e geração
-  de CSS/Android/iOS a partir da mesma fonte de verdade.
-- **Temas via CSS custom properties**: troca em runtime sem reconstrução,
-  suporte a `prefers-color-scheme` automático no tema dark.
-- **RAG enxuto, sem reranking**: pipeline simples e correto a um complexo e frágil.
-- **Bug real de índice `ivfflat`** encontrado e documentado: o índice criado
-  em tabela vazia causava buscas retornando zero resultados. Ver comentário em
-  `apps/api/src/scripts/migrate.ts`.
-- **Métricas nunca mockadas**: derivadas do código-fonte em tempo de execução.
+**Temas via CSS custom properties**
+Troca em runtime sem rebuild. O mesmo mecanismo suporta `prefers-color-scheme` automaticamente para o tema dark.
+
+**Style Dictionary como camada de transformação**
+Em vez de manter transformers separados para cada plataforma, o adapter converte o formato TypeScript interno para o formato Style Dictionary, que cuida do output. Adicionar uma nova plataforma (ex: Windows/WinUI) é adicionar um bloco de configuração.
+
+**RAG enxuto**
+Pipeline simples e correto (`extract → embed → similarity search → generate`) em vez de complexo e frágil. Bug real documentado: índice `ivfflat` criado em tabela vazia não funciona — foi descoberto, corrigido e documentado no código.
+
+**Métricas nunca mockadas**
+O `pnpm metrics` lê o filesystem real. Se um componente perde stories ou testes, o número cai imediatamente.
+
+---
+
+Ver [`CHANGELOG.md`](./CHANGELOG.md) e [`CONTRIBUTING.md`](./CONTRIBUTING.md).
